@@ -9,16 +9,16 @@ public class Offre {
     private String etat;
     private Date date_debut;
     private Date date_fin;
-    private Integer num_proprio;
+    private Integer num_logement;
 
-    public Offre(Integer id_offre, Integer montant, String objectif, String etat, Date date_debut, Date date_fin, Integer num_proprio) {
+    public Offre(Integer id_offre, Integer montant, String objectif, String etat, Date date_debut, Date date_fin, Integer num_logement) {
         this.id_offre = id_offre;
         this.montant = montant;
         this.objectif = objectif;
         this.etat = etat;
         this.date_debut = date_debut;
         this.date_fin = date_fin;
-        this.num_proprio = num_proprio;
+        this.num_logement = num_logement;
     }
 
     public Integer getId_offre() {
@@ -69,11 +69,11 @@ public class Offre {
         this.date_fin = date_fin;
     }
 
-    public Integer getNum_proprio() {
-        return num_proprio;
+    public Integer getnum_logement() {
+        return num_logement;
     }
 
-    public void setNum_proprio(Integer num_proprio) {
-        this.num_proprio = num_proprio;
+    public void setnum_logement(Integer num_logement) {
+        this.num_logement = num_logement;
     }
 }
