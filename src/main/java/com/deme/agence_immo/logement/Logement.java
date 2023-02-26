@@ -20,9 +20,4 @@ public class Logement {
     private Integer code_postal;
     private String ville;
     private Integer num_proprio;
-
-    public Logement(Integer num_logement, String ville) {
-        this.num_logement = num_logement;
-        this.ville = ville;
-    }
 }
