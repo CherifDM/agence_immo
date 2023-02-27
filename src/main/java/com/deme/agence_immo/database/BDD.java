@@ -6,6 +6,8 @@ import com.deme.agence_immo.logement.Logement;
 import com.deme.agence_immo.logement.LogementCriteria;
 import com.deme.agence_immo.offre.Offre;
 import com.deme.agence_immo.offre.OffreCriteria;
+import com.deme.agence_immo.personne.Personne;
+import com.deme.agence_immo.personne.PersonneCriteria;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -40,116 +42,6 @@ public class BDD {
         return con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
     }
 
-    /*USER*/
-
-
-
-    /*RESSOURCE*/
-/*
-    private Image getRessourceFromQueryResultat(ResultSet res) throws SQLException {
-        return new Image(res.getString(1), res.getString(8), res.getString(2), res.getString(3), res.getString(4), null, res.getDate(5), res.getString(6), res.getBoolean(7));
-    }
-
-    private User getUserWithAuthFromQueryResultat(ResultSet res) throws SQLException {
-        return new User(res.getString(1),res.getString(2),res.getString(3),res.getString(4),res.getString(5),res.getString(6));
-    }
-
-    private User getUserFromQueryResultat(ResultSet res) throws SQLException {
-        return new User(res.getString(1),res.getString(2),res.getString(3),res.getString(4),res.getString(5), "");
-    }
-
-    private Video getVideoFromQueryResultat(IRessource ressource, ResultSet res) throws SQLException {
-        return new Video(ressource.getId(),ressource.getId_author(), ressource.getAuthorName(), ressource.getTitle(),ressource.getDescription(),ressource.getCategoryIds(),ressource.getUploadDate(),ressource.getFileName(),ressource.isPrivate(), res.getString(2), res.getInt(3), res.getInt(4));
-    }
-
-    private Category getCategoryFromQueryResultat(ResultSet res) throws SQLException {
-        return new Category(res.getString(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5));
-    }
-
-    public IRessource setRessourceCategories(IRessource ressource) throws SQLException {
-        List<String> categoryIds = new ArrayList<>();
-        Statement st = connexion();
-        ResultSet res = st.executeQuery("SELECT * from categoryressources where IdRessource  ='"+ressource.getId()+"';");
-        while(res.next()){
-            categoryIds.add(res.getString(1));
-        }
-        ressource.setCategoryIds(categoryIds);
-        return ressource;
-    }
-
-    public IRessource getRessourceById(String ressourceId) throws SQLException {
-        Statement st = connexion();
-        ResultSet res = st.executeQuery("SELECT * from ressource where IdRessource  ='"+ressourceId+"';");
-        while(res.next()){
-            IRessource ressource = getRessourceFromQueryResultat(res);
-            return setRessourceCategories(ressource);
-        }
-        return null;
-    }
-
-
-    public IRessource insertRessource(IRessource ressource) throws SQLException {
-        System.out.println("Inserting into ressources");
-        String sql = "INSERT INTO Ressource(IdRessource,id_author,AuthorName,Title,Description, UploadDate, FileName, IsPrivate) VALUES(?,?,?,?,?,?,?,?)";
-        PreparedStatement preparedStatement = connexion(sql);
-        preparedStatement.setString(1, ressource.getId());
-        preparedStatement.setString(2, ressource.getId_author());
-        preparedStatement.setString(3, ressource.getAuthorName());
-        preparedStatement.setString(4, ressource.getTitle());
-        preparedStatement.setString(5, ressource.getDescription());
-        preparedStatement.setDate(6, new java.sql.Date(ressource.getUploadDate().getTime()));
-        preparedStatement.setString(7, ressource.getFileName());
-        preparedStatement.setBoolean(8, ressource.isPrivate());
-        preparedStatement.executeUpdate();
-        System.out.println("Succesfully added ressource : " + ressource.getFileName());
-        return ressource;
-    }
-
-
-    /*VIDEOS*/
-/*
-    @Override
-    public Video insertVideo(Video video) throws SQLException {
-        String videoUUID = UUID.randomUUID().toString();
-        video.setId(videoUUID);
-        String sql = "INSERT INTO Video(IdRessource,IdThumbnailImage, Duration ,NbViews) VALUES(?,?,?,?)";
-        insertRessource(video);
-        PreparedStatement preparedStatement = connexion(sql);
-        preparedStatement.setString(1, video.getId());
-        preparedStatement.setString(2, video.getIdThumbnailImage());
-        preparedStatement.setInt(3, video.getDuration());
-        preparedStatement.setInt(4, video.getNbViews());
-        preparedStatement.executeUpdate();
-        for (String categoryId:video.getCategoryIds()) {
-            insertRessourceCategories(video.getId(), categoryId);
-        }
-        System.out.println("Succesfully added video : " + video.getFileName());
-        return video;
-    }
-
-    @Override
-    public Video getVideoById(String videoId) throws SQLException {
-        Statement st = connexion();
-        ResultSet res = st.executeQuery("SELECT * from video where IdRessource  ='"+videoId+"';");
-        while(res.next()){
-            IRessource iRessource = getRessourceById(videoId);
-            return getVideoFromQueryResultat(iRessource, res);
-        }
-        return null;
-    }
-
-    @Override
-    public List<Video> getAllVideos() throws SQLException {
-        Statement st = connexion();
-        ResultSet res = st.executeQuery("SELECT * from video ;");
-        List videos = new ArrayList();
-        while(res.next()){
-            IRessource iRessource = getRessourceById(res.getString(1));
-            videos.add(getVideoFromQueryResultat(iRessource, res));
-        }
-        return videos;
-
-    }*/
 
     /*LOGEMENTS*/
 
@@ -271,5 +163,56 @@ public class BDD {
             offres.add(getOffreFromQueryResultat(res, logement));
         }
         return offres;
+    }
+
+    /***/
+    private Personne getPersonneFromQueryResultat(ResultSet res) throws SQLException {
+        return new Personne(res.getInt(1),res.getString(2),res.getString(3),res.getInt(4),res.getString(5),res.getInt(6),res.getString(7));
+    }
+
+    private String buildPersonneCriteriaSQL(PersonneCriteria personneCriteria, CriteriaQueryBuilder criteriaQueryBuilder){
+        StringBuilder sqlBuilder = new StringBuilder();
+        if(personneCriteria == null) return "";
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Num_client", QueryOperator.EQUAL, personneCriteria.getNum_client()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Nom", QueryOperator.EQUAL, personneCriteria.getNom()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Prenom", QueryOperator.EQUAL, personneCriteria.getPrenom()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Numero", QueryOperator.SUPERIOR, personneCriteria.getNumero()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Rue", QueryOperator.INFERIOR, personneCriteria.getRue()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Code_postal", QueryOperator.INFERIOR, personneCriteria.getCode_postal()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQueryWithArray("P.ville", personneCriteria.getVille()));
+        return sqlBuilder.toString();
+    }
+
+    public Personne getPersonneById(String personneId) throws SQLException {
+        Statement st = connexion();
+        ResultSet res = st.executeQuery("SELECT * from personne where Num_client  ='"+personneId+"';");
+        while(res.next()){
+            return getPersonneFromQueryResultat(res);
+        }
+        return null;
+    }
+    public List<Personne> getPersonnesByCriteria(PersonneCriteria personneCriteria) throws SQLException {
+        Statement st = connexion();
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("SELECT * FROM Personne AS P ");
+        CriteriaQueryBuilder criteriaQueryBuilder = new CriteriaQueryBuilder();
+        sqlBuilder.append(buildPersonneCriteriaSQL(personneCriteria, criteriaQueryBuilder));
+        sqlBuilder.append(";");
+        ResultSet res = st.executeQuery(sqlBuilder.toString());
+        List personnes = new ArrayList();
+        while(res.next()){
+            personnes.add(getPersonneFromQueryResultat(res));
+        }
+        return personnes;
+    }
+
+    public List<Personne> getAllPersonnes() throws SQLException {
+        Statement st = connexion();
+        ResultSet res = st.executeQuery("SELECT * from personne;");
+        List personnes = new ArrayList();
+        while(res.next()){
+            personnes.add(getPersonneFromQueryResultat(res));
+        }
+        return personnes;
     }
 }

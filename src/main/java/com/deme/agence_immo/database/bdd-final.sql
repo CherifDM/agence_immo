@@ -76,7 +76,8 @@ CREATE TABLE Visite(
 );
 INSERT INTO Personne VALUES (10, 'Michel', 'Alice', 11, 'Rue De Ravioli',75000,'Paris');
 INSERT INTO Personne VALUES (11, 'Dupont', 'Antoine', 15, 'Rue De Ravioli',75000,'Paris');
-INSERT INTO Personne VALUES (12, 'Jean', 'Pierre', 24, 'Rue De Ravioli',75000,'Paris');
+INSERT INTO Personne VALUES (12, 'Pormanove', 'Jean', 45, 'Rue De',75000,'Paris');
+
 INSERT INTO Personne VALUES (13, 'Dubois', 'Gabriel', 1, 'Rue De La Fountaine Au Roi',75000,'Paris');
 INSERT INTO Personne VALUES (14, 'Durand', 'Emma', 2, 'Rue De La Fountaine Au Roi',75000,'Paris');
 INSERT INTO Personne VALUES (15, 'Laurent', 'Charles', 3, 'Rue De La Fountaine Au Roi',75000,'Paris');
