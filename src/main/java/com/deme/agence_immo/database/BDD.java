@@ -174,11 +174,11 @@ public class BDD {
         StringBuilder sqlBuilder = new StringBuilder();
         if(personneCriteria == null) return "";
         sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Num_client", QueryOperator.EQUAL, personneCriteria.getNum_client()));
-        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Nom", QueryOperator.EQUAL, personneCriteria.getNom()));
-        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Prenom", QueryOperator.EQUAL, personneCriteria.getPrenom()));
-        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Numero", QueryOperator.SUPERIOR, personneCriteria.getNumero()));
-        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Rue", QueryOperator.INFERIOR, personneCriteria.getRue()));
-        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Code_postal", QueryOperator.INFERIOR, personneCriteria.getCode_postal()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Nom", QueryOperator.LIKE, personneCriteria.getNom()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Prenom", QueryOperator.LIKE, personneCriteria.getPrenom()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Numero", QueryOperator.EQUAL, personneCriteria.getNumero()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Rue", QueryOperator.LIKE, personneCriteria.getRue()));
+        sqlBuilder.append(criteriaQueryBuilder.buildQuery("P.Code_postal", QueryOperator.EQUAL, personneCriteria.getCode_postal()));
         sqlBuilder.append(criteriaQueryBuilder.buildQueryWithArray("P.ville", personneCriteria.getVille()));
         return sqlBuilder.toString();
     }

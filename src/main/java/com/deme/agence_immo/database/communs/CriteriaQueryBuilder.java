@@ -21,7 +21,7 @@ public class CriteriaQueryBuilder {
         } else {
             sqlBuilder.append(" AND ");
         }
-        sqlBuilder.append(collumn + " " + getOperatorString(operator) + " '" + value + "'");
+        sqlBuilder.append(collumn + " " + getOperatorString(operator, value));
         return sqlBuilder.toString();
     }
 
@@ -46,11 +46,12 @@ public class CriteriaQueryBuilder {
         return sqlBuilder.toString();
     }
 
-    private static String getOperatorString (QueryOperator operator){
+    private static String getOperatorString (QueryOperator operator, String value){
         switch (operator){
-            case EQUAL: return "=";
-            case SUPERIOR: return ">=";
-            case INFERIOR: return "<=";
+            case EQUAL: return "=" + " '" + value + "'";
+            case SUPERIOR: return ">=" + " '" + value + "'";
+            case INFERIOR: return "<=" + " '" + value + "'";
+            case LIKE: return "LIKE" + " %" + value + "%";
             default: return null;
         }
     }

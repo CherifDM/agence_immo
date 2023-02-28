@@ -1,3 +1,7 @@
+-- noinspection SqlDialectInspectionForFile
+
+-- noinspection SqlNoDataSourceInspectionForFile
+
 Exploitation de la base de données : Proposer des requêtes pour exploiter votre base de données et
 les écrire en syntaxe SQL, et les exécuter.
 
